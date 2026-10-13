@@ -224,7 +224,7 @@ button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 <div class="legend" id="legend">
 <div class="lg"><div class="lg-h">Acceptability <span id="leg-acc"></span></div>
 <div class="lg-row"><span><i class="d" style="background:var(--e)"></i>Endorsed</span><span><i class="d" style="background:var(--c)"></i>Conditional</span><span><i class="d" style="background:var(--x)"></i>Contested</span><span><i class="d" style="background:var(--r)"></i>Rejected</span><span><i class="d" style="background:var(--none)"></i>No AI use found yet</span></div></div>
-<div class="lg"><div class="pill" id="szpill" role="group" aria-label="Circle size shows"><span class="thumb" aria-hidden="true"></span><div class="opt on"><button type="button" class="optb sg" data-size="pop" aria-pressed="true">Popularity</button><span id="leg-pop"></span></div><div class="opt"><button type="button" class="optb sg" data-size="count" aria-pressed="false">Use cases</button><span id="leg-cnt"></span></div></div>
+<div class="lg"><div class="pill" id="szpill" role="group" aria-label="Circle size shows"><span class="thumb" aria-hidden="true"></span><div class="opt on"><button type="button" class="optb sg" data-size="pop" aria-pressed="true">Popularity</button><span id="leg-pop"></span></div><div class="opt"><button type="button" class="optb sg" data-size="count" aria-pressed="false">Number of use cases</button><span id="leg-cnt"></span></div></div>
 <div class="lg-row"><div class="ramp"><span class="ramp-t" id="ramp-cap"></span><svg id="ramp" height="50" aria-hidden="true"></svg></div></div></div>
 </div>
 <p class="note">Data version 2026 Oct. Popularity follows the rubric in the method notes; entries marked "Evidence still being checked" will be re-verified in the next update.</p>
@@ -279,7 +279,7 @@ evidence:'<h4>Evidence</h4><p>Where the support for each use case comes from. A 
 acceptability:'<h4>Acceptability</h4><p>How credible sources judge this use of AI. A person stays responsible at every level.</p><dl><dt>Endorsed</dt><dd>Sources recommend it, with the usual human review.</dd><dt>Conditional</dt><dd>Recommended only with extra safeguards, such as grounding in real data or checking every output.</dd><dt>Contested</dt><dd>Credible sources disagree.</dd><dt>Rejected</dt><dd>Most sources advise against it.</dd></dl><p style="margin-top:8px">Each circle\'s color follows the average of its use cases. Steps use six distinct shades: the four levels, plus olive for leaning between endorsed and conditional, and terracotta for leaning between conditional and contested. Phases and groups compare the balance of endorsed against contested or rejected use cases, since their averages are too similar to tell apart: greener means more endorsed, pinker means more contested or rejected. The panel shows the full mix.</p>',
 version:'<h4>Published</h4><p>Each update of this database is published with its year and month. The latest update is shown by default. Pick an earlier one to see the map as it was then.</p>',
 tool:'<h4>Tool</h4><p>Tools practitioners use for this. General AI assistants include ChatGPT, Claude and Gemini. "Research prototype" means the use exists only in academic systems so far.</p>',
-count:'<h4>Use cases</h4><p>How many AI use cases are documented here, shown in five sizes.</p><dl><dt>Steps</dt><dd>Two use cases per size: 1\u20132, 3\u20134 and so on.</dd><dt>Groups</dt><dd>Four per size.</dd><dt>Phases</dt><dd>Six per size.</dd></dl><p style="margin-top:8px">This reflects how many different ways AI is used and how much has been written about it, not how many people use it.</p>',
+count:'<h4>Number of use cases</h4><p>How many AI use cases are documented here, shown in five sizes.</p><dl><dt>Steps</dt><dd>Two use cases per size: 1\u20132, 3\u20134 and so on.</dd><dt>Groups</dt><dd>Four per size.</dd><dt>Phases</dt><dd>Six per size.</dd></dl><p style="margin-top:8px">This reflects how many different ways AI is used and how much has been written about it, not how many people use it.</p>',
 legend:'<h4>Popularity</h4><p>How widely practitioners use AI here, shown in five sizes.</p><dl><dt>High</dt><dd>Over 50% of surveyed practitioners.</dd><dt>Medium</dt><dd>16 to 50%, or wide tool support and several practitioner reports.</dd><dt>Low</dt><dd>Little real-world evidence so far.</dd></dl><p style="margin-top:8px"><b style="font-weight:500">Steps and groups:</b> the average of their use cases. A single use case is the smallest, middle or largest size; in-between sizes mean an average between two levels.</p><p><b style="font-weight:500">Phases:</b> the share of use cases rated medium or high, in 20% bands. Phase averages are too similar to compare, so this shows the difference more clearly.</p><p>Use cases with no adoption data are left out of averages. Thresholds follow Rogers\' Diffusion of Innovations.</p>'};
 function infoBtn(key,label){const b=document.createElement('button');b.className='info';b.type='button';b.setAttribute('aria-label','About '+label);b.setAttribute('aria-expanded','false');b.textContent='i';
 const p=document.createElement('div');p.className='pop';p.setAttribute('role','dialog');p.innerHTML=INFO[key];b.appendChild(p);
@@ -358,12 +358,12 @@ const PA={Research:[230,450],Analysis:[230,170],Synthesis:[590,170],Prototype:[5
 const RS=[[40,22,30],[24,16,18],[9,13,9]];
 function phaseOf(members){return STEPS.find(x=>x[0]===members[0])[2];}
 function lblLines(l){if(l.length<=13||l.indexOf(' ')<0)return[l];const w=l.split(' ');let best=1,bd=1e9;for(let k=1;k<w.length;k++){const d=Math.abs(w.slice(0,k).join(' ').length-w.slice(k).join(' ').length);if(d<bd){bd=d;best=k;}}return[w.slice(0,best).join(' '),w.slice(best).join(' ')];}
-const POS={'Insights':[353,88],'Modelling':[291,108],'Patterns':[291,155],'Quant':[255,220],'Coding':[180,231],'Data prep':[218,293],
-'Evaluation':[224,350],'Fieldwork':[174,382],'Desk research':[224,404],'Recruiting':[341,469],'Materials':[276,504],'Planning':[356,537],
+const POS={'Planning':[372,350],'Materials':[300,425],'Recruiting':[220,485],'Desk research':[125,450],'Fieldwork':[118,360],'Evaluation':[372,545],
+'Data prep':[218,293],'Coding':[180,231],'Quant':[255,220],'Patterns':[291,155],'Modelling':[291,108],'Insights':[353,88],
 'Frameworks':[463,99],'Principles':[543,134],'Ideation':[611,204],'Concepts':[618,304],'Interface design':[611,366],'Content creation':[623,409],'Functional':[537,490],'Handoff':[488,523]};
+const LOOPBACK=['Evaluation'];
 function layout(ns){
-ns.forEach(n=>{const pts=n.members.map(m=>POS[m]);let ax=pts.reduce((a,p)=>a+p[0],0)/pts.length,ay=pts.reduce((a,p)=>a+p[1],0)/pts.length;
-if(n.kind!=='step'){const th=Math.atan2(ay-310,ax-410);ax=410+200*Math.cos(th);ay=310+200*Math.sin(th);}
+ns.forEach(n=>{let mm=n.members;if(n.kind!=='step'&&mm.length>1){const k=mm.filter(m=>!LOOPBACK.includes(m));if(k.length)mm=k;}const pts=mm.map(m=>POS[m]);const ax=pts.reduce((a,p)=>a+p[0],0)/pts.length,ay=pts.reduce((a,p)=>a+p[1],0)/pts.length;
 const gr=GROUPS.find(gg=>gg[2].includes(n.members[0]));n.grp=n.kind==='step'?gr[0]:n.key;
 n.lines=lblLines(LABEL[n.label]||n.label);n.hw=Math.max(n.r,7.2*Math.max(...n.lines.map(x=>x.length))/2);
 n.ax=ax;n.ay=ay;n.x=ax;n.y=ay;n.q=QR[phaseOf(n.members)];});
@@ -438,7 +438,13 @@ g.appendChild(el);next[n.key]={key:n.key,x,y,rd:r,members:n.members,el};});
 PREVN=next;
 if(anim.length){g.getBoundingClientRect();requestAnimationFrame(()=>requestAnimationFrame(()=>{anim.forEach(([el,pc,r,t])=>{el.style.transition='transform .7s '+EASE+', opacity .6s ease';el.style.transform='';el.style.opacity='';pc.setAttribute('r',r);t.style.transition='transform .7s '+EASE;t.style.transform='';});}));}
 panel();}
-(function(){const p=a=>[410+200*Math.cos(a*Math.PI/180),310+200*Math.sin(a*Math.PI/180)];const[a0,b0]=p(93),[a1,b1]=p(78+360);document.getElementById('flow').setAttribute('d','M'+a0+' '+b0+' A200 200 0 1 1 '+a1+' '+b1);})();
+(function(){const order=[['Planning'],['Materials'],['Recruiting'],['Desk research'],['Fieldwork'],['Data prep','Coding','Quant'],['Patterns','Modelling','Insights'],['Frameworks','Principles'],['Ideation','Concepts'],['Interface design','Content creation'],['Functional','Handoff'],['Evaluation']];
+const W=[[410,316]].concat(order.map(g=>[g.reduce((a,m)=>a+POS[m][0],0)/g.length,g.reduce((a,m)=>a+POS[m][1],0)/g.length]));
+const e=W[W.length-1];W[W.length-1]=[e[0]-30,e[1]-8];W.push([e[0]-100,e[1]-20]);
+const P=[W[0]].concat(W,[W[W.length-1]]);let d='M'+W[0][0].toFixed(1)+' '+W[0][1].toFixed(1);
+for(let i=1;i<P.length-2;i++){const p0=P[i-1],p1=P[i],p2=P[i+1],p3=P[i+2];for(let k=1;k<=24;k++){const t=k/24,t2=t*t,t3=t2*t;
+const f=dd=>0.5*(2*p1[dd]+(-p0[dd]+p2[dd])*t+(2*p0[dd]-5*p1[dd]+4*p2[dd]-p3[dd])*t2+(-p0[dd]+3*p1[dd]-3*p2[dd]+p3[dd])*t3);d+=' L'+f(0).toFixed(1)+' '+f(1).toFixed(1);}}
+document.getElementById('flow').setAttribute('d',d);})();
 let AUTO=null;
 function stopAuto(){if(AUTO){clearInterval(AUTO);AUTO=null;}}
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const seq=[1,0,1,2];let si=0,visible=false;
