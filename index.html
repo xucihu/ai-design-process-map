@@ -121,6 +121,7 @@ svg.map{width:100%;height:auto;display:block}
 .lb{font-family:'Montserrat',sans-serif;font-size:12px;fill:color-mix(in srgb,var(--ink) 82%,var(--bg))}
 .ph{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:400;letter-spacing:.02em;fill:color-mix(in srgb,var(--muted) 60%,var(--bg))}
 .lb.lbp{font-size:11px}
+.lbs{font-size:10.5px}
 .ax{font-size:13px;fill:var(--muted)}
 .step{cursor:pointer}.step:focus{outline:none}.step:hover .pie{filter:brightness(.95)}
 .pie,.ring{transition:r .5s cubic-bezier(.33,1,.68,1)}
@@ -228,7 +229,7 @@ button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 <div class="lg"><div class="pill" id="szpill" role="group" aria-label="Circle size shows"><span class="thumb" aria-hidden="true"></span><div class="opt on"><button type="button" class="optb sg" data-size="pop" aria-pressed="true">Popularity</button><span id="leg-pop"></span></div><div class="opt"><button type="button" class="optb sg" data-size="count" aria-pressed="false">Number of use cases</button><span id="leg-cnt"></span></div></div>
 <div class="lg-row"><div class="ramp"><span class="ramp-t" id="ramp-cap"></span><svg id="ramp" height="50" aria-hidden="true"></svg></div></div></div>
 </div>
-<p class="note">Data version 2026 Oct. Popularity follows the rubric in the method notes.<br>&copy; 2026 Xuci Hu</p>
+<p class="note">Last updated October 13, 2026<br>&copy; 2026 Xuci Hu</p>
 </section>
 <aside class="panel" id="panel" aria-live="polite" hidden></aside>
 </div>
@@ -362,16 +363,17 @@ function lblLines(l){if(l.length<=13||l.indexOf(' ')<0)return[l];const w=l.split
 const POS={'Planning':[380,370],'Materials':[300,420],'Recruiting':[365,455],'Desk research':[215,440],'Fieldwork':[165,370],'Evaluation':[300,545],'Data prep':[227,259],'Coding':[158,231],'Quant':[232,182],'Patterns':[327,168],'Modelling':[283,126],'Insights':[353,88],'Frameworks':[449,99],'Principles':[557,116],'Ideation':[611,195],'Concepts':[618,259],'Interface design':[582,366],'Content creation':[652,409],'Functional':[549,490],'Handoff':[476,523]};
 const OLDPOS={'Insights':[353,88],'Modelling':[291,108],'Patterns':[291,155],'Quant':[255,220],'Coding':[180,231],'Data prep':[218,293],'Evaluation':[224,350],'Fieldwork':[174,382],'Desk research':[224,404],'Recruiting':[341,469],'Materials':[276,504],'Planning':[356,537],'Frameworks':[463,99],'Principles':[543,134],'Ideation':[611,204],'Concepts':[618,304],'Interface design':[611,366],'Content creation':[623,409],'Functional':[537,490],'Handoff':[488,523]};
 // how an opened group lays out its steps in Groups view: tn = [along the flow, outward], xy = screen offsets
-const EXPL={'Plan research':{tn:{Planning:[-48,0],Materials:[30,34],Recruiting:[30,-34]}},'Gather data':{xy:{'Desk research':[-84,0],Fieldwork:[0,0],Evaluation:[84,0]}}};
+const EXPL={'Plan research':{tn:{Planning:[-48,0],Materials:[30,34],Recruiting:[30,-34]}},'Gather data':{xy:{'Desk research':[-62,-22],Fieldwork:[22,-40],Evaluation:[6,44]}}};
 // Steps view: a smooth spiral from the center through the Research steps, then one even loop round the 2x2,
 // ending just before Evaluative research. Drawn from where the circles actually land.
 function flow2(ns){const at=k=>{const n=ns.find(m=>m.key===k);return[n.x,n.y];},mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
-const RM=218,GR=32/274,pol=th=>{const a=th*Math.PI/180,r=RM+GR*(th-200);return[410+r*Math.cos(a),316+r*Math.sin(a)];};
+const ev=ns.find(m=>m.key==='Evaluation'),rE=Math.hypot(ev.x-410,ev.y-316);let tE=Math.atan2(ev.y-316,ev.x-410)*180/Math.PI;while(tE<300)tE+=360;tE-=(ev.rd+30)/rE*180/Math.PI;
+const RM=218,GR=(rE-RM)/(tE-200),pol=th=>{const a=th*Math.PI/180,r=RM+GR*(th-200);return[410+r*Math.cos(a),316+r*Math.sin(a)];};
 const W=[[410,316],at('Planning'),mid(at('Materials'),at('Recruiting')),at('Desk research'),at('Fieldwork'),pol(200),pol(214)];
 const Q=[W[0]].concat(W,[pol(228)]);let d='M410 316';
 for(let i=1;i<Q.length-2;i++){const p0=Q[i-1],p1=Q[i],p2=Q[i+1],p3=Q[i+2];for(let k=1;k<=20;k++){const t=k/20,t2=t*t,t3=t2*t;
 const f=j=>0.5*(2*p1[j]+(-p0[j]+p2[j])*t+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*t2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*t3);d+=' L'+f(0).toFixed(1)+' '+f(1).toFixed(1);}}
-for(let th=216;th<=474;th+=2){const p=pol(th);d+=' L'+p[0].toFixed(1)+' '+p[1].toFixed(1);}
+for(let th=216;th<tE;th+=2){const p=pol(th);d+=' L'+p[0].toFixed(1)+' '+p[1].toFixed(1);}{const p=pol(tE);d+=' L'+p[0].toFixed(1)+' '+p[1].toFixed(1);}
 document.getElementById('flow2').setAttribute('d',d);}
 function layout(ns){
 const cen=(src,ms)=>[ms.reduce((a,m)=>a+src[m][0],0)/ms.length,ms.reduce((a,m)=>a+src[m][1],0)/ms.length];
@@ -384,15 +386,15 @@ else if(sp&&sp.xy){ax=G[0]+sp.xy[n.key][0];ay=G[1]+sp.xy[n.key][1];}
 else{ax=G[0]+(POS[n.key][0]-C[0])*0.8;ay=G[1]+(POS[n.key][1]-C[1])*0.8;}}
 else[ax,ay]=POS[n.key];
 const gr=GROUPS.find(gg=>gg[2].includes(n.members[0]));n.grp=n.kind==='step'?gr[0]:n.key;
-n.lines=lblLines(LABEL[n.label]||n.label);n.hw=Math.max(n.r,7.2*Math.max(...n.lines.map(x=>x.length))/2);
+n.lines=lblLines(LABEL[n.label]||n.label);n.lh=n.kind==='step'?11.5:13;n.hw=Math.max(n.r,(n.kind==='step'?6.3:7.2)*Math.max(...n.lines.map(x=>x.length))/2);
 n.ax=ax;n.ay=ay;n.x=ax;n.y=ay;n.q=QR[phaseOf(n.members)];});
-const P=8,box=n=>[n.x-n.hw,n.y-n.r,n.x+n.hw,n.y+n.r+8+13*n.lines.length];
+const P=8,box=n=>[n.x-n.hw,n.y-n.r,n.x+n.hw,n.y+n.r+8+n.lh*n.lines.length];
 for(let it=0;it<520;it++){
 for(let a=0;a<ns.length;a++)for(let b=a+1;b<ns.length;b++){const A=ns[a],B=ns[b],ba=box(A),bb=box(B);
 if(A.kind==='step'&&A.q!==B.q)continue;const PP=(A.kind==='step'&&A.grp!==B.grp)?16:P;const ox=Math.min(ba[2],bb[2])-Math.max(ba[0],bb[0])+PP,oy=Math.min(ba[3],bb[3])-Math.max(ba[1],bb[1])+PP;
 if(ox>0&&oy>0){if(ox*0.5<oy){const sg=B.x>=A.x?1:-1;A.x-=sg*ox/2;B.x+=sg*ox/2;}else{const sg=B.y>=A.y?1:-1;A.y-=sg*oy/2;B.y+=sg*oy/2;}}}
 const pull=it<300?0.12:0;ns.forEach(n=>{n.x+=(n.ax-n.x)*pull;n.y+=(n.ay-n.y)*pull;const[x0,y0,x1,y1]=n.q;
-n.x=Math.max(x0+n.hw+6,Math.min(x1-n.hw-6,n.x));n.y=Math.max(y0+n.r+22,Math.min(y1-n.r-10-13*n.lines.length,n.y));});}
+n.x=Math.max(x0+n.hw+6,Math.min(x1-n.hw-6,n.x));n.y=Math.max(y0+n.r+22,Math.min(y1-n.r-10-n.lh*n.lines.length,n.y));});}
 return ns;}
 let PREVN={};let SIZE='pop';const RC=[[14,6],[10,6],[6,6]];
 const hx2=h=>{h=h.trim();return[1,3,5].map(k=>parseInt(h.slice(k,k+2),16));};
@@ -441,7 +443,7 @@ const pc=mk('circle',{cx:x,cy:y,r:r,fill:col,class:'pie'});el.appendChild(pc);
 const on=n.key===SEL||(n.kind==='step'&&LEVEL===1&&n.grp===SEL);
 const ring=mk('circle',{cx:x,cy:y,r:r+(on?1.5:0),fill:'none',class:'ring'});
 if(on){ring.style.stroke='color-mix(in srgb, '+col+' 65%, #39342B)';ring.style.strokeWidth='2.5px';}
-el.appendChild(ring);const t=mk('text',{x:x,y:y+r+14,'text-anchor':'middle',class:n.kind==='phase'?'lb lbp':'lb'});n.lines.forEach((ln,ii)=>{const ts=mk('tspan',{x:x,dy:ii?13:0});ts.textContent=ln;t.appendChild(ts);});el.appendChild(t);
+el.appendChild(ring);const t=mk('text',{x:x,y:y+r+(n.kind==='step'?12:14),'text-anchor':'middle',class:n.kind==='phase'?'lb lbp':n.kind==='step'?'lb lbs':'lb'});n.lines.forEach((ln,ii)=>{const ts=mk('tspan',{x:x,dy:ii?n.lh:0});ts.textContent=ln;t.appendChild(ts);});el.appendChild(t);
 const go=()=>{if(LEVEL===1&&n.kind==='step')SEL=SEL===n.key?n.grp:n.key;else SEL=SEL===n.key?null:n.key;render();};
 el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
 if(motion&&Object.keys(old).length){const same=old[n.key];let sx=null,sy=null,sr=null,fade=false;
