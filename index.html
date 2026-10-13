@@ -220,6 +220,7 @@ button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 <text class="ph" x="66" y="58">Analysis</text><text class="ph" x="754" y="58" text-anchor="end">Synthesis</text>
 <text class="ph" x="66" y="576">Research</text><text class="ph" x="754" y="576" text-anchor="end">Prototype</text>
 <path id="flow" fill="none" stroke="var(--muted)" stroke-width=".8" stroke-dasharray="1 6" stroke-linecap="round" opacity=".7" marker-end="url(#arr)"/>
+<path id="flow2" fill="none" stroke="var(--muted)" stroke-width=".8" stroke-dasharray="1 6" stroke-linecap="round" opacity=".7" marker-end="url(#arr)"/>
 <g id="ghost"></g><g id="steps"></g></svg>
 <div class="legend" id="legend">
 <div class="lg"><div class="lg-h">Acceptability <span id="leg-acc"></span></div>
@@ -358,19 +359,18 @@ const PA={Research:[230,450],Analysis:[230,170],Synthesis:[590,170],Prototype:[5
 const RS=[[40,22,30],[24,16,18],[9,13,9]];
 function phaseOf(members){return STEPS.find(x=>x[0]===members[0])[2];}
 function lblLines(l){if(l.length<=13||l.indexOf(' ')<0)return[l];const w=l.split(' ');let best=1,bd=1e9;for(let k=1;k<w.length;k++){const d=Math.abs(w.slice(0,k).join(' ').length-w.slice(k).join(' ').length);if(d<bd){bd=d;best=k;}}return[w.slice(0,best).join(' '),w.slice(best).join(' ')];}
-const POS={'Planning':[372,350],'Materials':[300,425],'Recruiting':[220,485],'Desk research':[125,450],'Fieldwork':[118,360],'Evaluation':[372,545],
-'Data prep':[218,293],'Coding':[180,231],'Quant':[255,220],'Patterns':[291,155],'Modelling':[291,108],'Insights':[353,88],
-'Frameworks':[463,99],'Principles':[543,134],'Ideation':[611,204],'Concepts':[618,304],'Interface design':[611,366],'Content creation':[623,409],'Functional':[537,490],'Handoff':[488,523]};
-const LOOPBACK=['Evaluation'];
+const POS={'Planning':[372,350],'Materials':[280,425],'Recruiting':[345,450],'Desk research':[175,445],'Fieldwork':[120,365],'Evaluation':[300,545],'Data prep':[227,259],'Coding':[158,231],'Quant':[232,182],'Patterns':[327,168],'Modelling':[291,96],'Insights':[353,88],'Frameworks':[449,99],'Principles':[557,116],'Ideation':[611,195],'Concepts':[618,259],'Interface design':[582,366],'Content creation':[652,409],'Functional':[549,490],'Handoff':[476,523]};
+const OLDPOS={'Insights':[353,88],'Modelling':[291,108],'Patterns':[291,155],'Quant':[255,220],'Coding':[180,231],'Data prep':[218,293],'Evaluation':[224,350],'Fieldwork':[174,382],'Desk research':[224,404],'Recruiting':[341,469],'Materials':[276,504],'Planning':[356,537],'Frameworks':[463,99],'Principles':[543,134],'Ideation':[611,204],'Concepts':[618,304],'Interface design':[611,366],'Content creation':[623,409],'Functional':[537,490],'Handoff':[488,523]};
 function layout(ns){
-ns.forEach(n=>{let mm=n.members;if(n.kind!=='step'&&mm.length>1){const k=mm.filter(m=>!LOOPBACK.includes(m));if(k.length)mm=k;}const pts=mm.map(m=>POS[m]);const ax=pts.reduce((a,p)=>a+p[0],0)/pts.length,ay=pts.reduce((a,p)=>a+p[1],0)/pts.length;
+ns.forEach(n=>{const src=n.kind==='step'?POS:OLDPOS;const pts=n.members.map(m=>src[m]);let ax=pts.reduce((a,p)=>a+p[0],0)/pts.length,ay=pts.reduce((a,p)=>a+p[1],0)/pts.length;
+if(n.kind!=='step'){const th=Math.atan2(ay-310,ax-410);ax=410+200*Math.cos(th);ay=310+200*Math.sin(th);}
 const gr=GROUPS.find(gg=>gg[2].includes(n.members[0]));n.grp=n.kind==='step'?gr[0]:n.key;
 n.lines=lblLines(LABEL[n.label]||n.label);n.hw=Math.max(n.r,7.2*Math.max(...n.lines.map(x=>x.length))/2);
 n.ax=ax;n.ay=ay;n.x=ax;n.y=ay;n.q=QR[phaseOf(n.members)];});
 const P=8,box=n=>[n.x-n.hw,n.y-n.r,n.x+n.hw,n.y+n.r+8+13*n.lines.length];
 for(let it=0;it<520;it++){
 for(let a=0;a<ns.length;a++)for(let b=a+1;b<ns.length;b++){const A=ns[a],B=ns[b],ba=box(A),bb=box(B);
-const PP=(A.kind==='step'&&A.grp!==B.grp)?16:P;const ox=Math.min(ba[2],bb[2])-Math.max(ba[0],bb[0])+PP,oy=Math.min(ba[3],bb[3])-Math.max(ba[1],bb[1])+PP;
+if(A.kind==='step'&&A.q!==B.q)continue;const PP=(A.kind==='step'&&A.grp!==B.grp)?16:P;const ox=Math.min(ba[2],bb[2])-Math.max(ba[0],bb[0])+PP,oy=Math.min(ba[3],bb[3])-Math.max(ba[1],bb[1])+PP;
 if(ox>0&&oy>0){if(ox*0.5<oy){const sg=B.x>=A.x?1:-1;A.x-=sg*ox/2;B.x+=sg*ox/2;}else{const sg=B.y>=A.y?1:-1;A.y-=sg*oy/2;B.y+=sg*oy/2;}}}
 const pull=it<300?0.12:0;ns.forEach(n=>{n.x+=(n.ax-n.x)*pull;n.y+=(n.ay-n.y)*pull;const[x0,y0,x1,y1]=n.q;
 n.x=Math.max(x0+n.hw+6,Math.min(x1-n.hw-6,n.x));n.y=Math.max(y0+n.r+22,Math.min(y1-n.r-10-13*n.lines.length,n.y));});}
@@ -400,7 +400,7 @@ function allData(members){const list=UC.filter(u=>members.includes(u.step));cons
 document.querySelectorAll('.lv').forEach(b=>b.addEventListener('click',()=>{LEVEL=+b.dataset.level;EXP.clear();SEL=null;render();}));
 document.getElementById('ltog').addEventListener('change',e=>{document.querySelector('svg.map').classList.toggle('nolabels',!e.target.checked);});
 const EASE='cubic-bezier(.33,1,.68,1)';
-function render(){updCount();hlLegend(0);
+function render(){updCount();{const f1=document.getElementById('flow'),f2=document.getElementById('flow2');if(f1&&f2){f1.style.display=LEVEL===2?'none':'';f2.style.display=LEVEL===2?'':'none';}}hlLegend(0);
 document.querySelectorAll('.lv').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.level===LEVEL)));
 const ns=nodes().map(n=>{const lv=n.kind==='step'?2:n.kind==='group'?1:0;n.d=groupData(n.members);const da=allData(n.members);
 n.r=Math.max(radFor(da,lv,'pop'),radFor(da,lv,'count'));n.rd=radFor(n.d,lv,SIZE);return n;});
@@ -438,13 +438,14 @@ g.appendChild(el);next[n.key]={key:n.key,x,y,rd:r,members:n.members,el};});
 PREVN=next;
 if(anim.length){g.getBoundingClientRect();requestAnimationFrame(()=>requestAnimationFrame(()=>{anim.forEach(([el,pc,r,t])=>{el.style.transition='transform .7s '+EASE+', opacity .6s ease';el.style.transform='';el.style.opacity='';pc.setAttribute('r',r);t.style.transition='transform .7s '+EASE;t.style.transform='';});}));}
 panel();}
-(function(){const order=[['Planning'],['Materials'],['Recruiting'],['Desk research'],['Fieldwork'],['Data prep','Coding','Quant'],['Patterns','Modelling','Insights'],['Frameworks','Principles'],['Ideation','Concepts'],['Interface design','Content creation'],['Functional','Handoff'],['Evaluation']];
+(function(){const p=a=>[410+200*Math.cos(a*Math.PI/180),310+200*Math.sin(a*Math.PI/180)];const[a0,b0]=p(93),[a1,b1]=p(78+360);document.getElementById('flow').setAttribute('d','M'+a0+' '+b0+' A200 200 0 1 1 '+a1+' '+b1);
+const order=[['Planning'],['Materials','Recruiting'],['Desk research'],['Fieldwork'],['Data prep','Coding','Quant'],['Patterns','Modelling','Insights'],['Frameworks','Principles'],['Ideation','Concepts'],['Interface design','Content creation'],['Functional','Handoff']];
 const W=[[410,316]].concat(order.map(g=>[g.reduce((a,m)=>a+POS[m][0],0)/g.length,g.reduce((a,m)=>a+POS[m][1],0)/g.length]));
-const e=W[W.length-1];W[W.length-1]=[e[0]-30,e[1]-8];W.push([e[0]-100,e[1]-20]);
-const P=[W[0]].concat(W,[W[W.length-1]]);let d='M'+W[0][0].toFixed(1)+' '+W[0][1].toFixed(1);
-for(let i=1;i<P.length-2;i++){const p0=P[i-1],p1=P[i],p2=P[i+1],p3=P[i+2];for(let k=1;k<=24;k++){const t=k/24,t2=t*t,t3=t2*t;
+const ev=POS['Evaluation'],pv=W[W.length-1],dx=ev[0]-pv[0],dy=ev[1]-pv[1],L=Math.hypot(dx,dy)||1;W.push([ev[0]-dx/L*44,ev[1]-dy/L*44]);
+const Q=[W[0]].concat(W,[W[W.length-1]]);let d='M'+W[0][0].toFixed(1)+' '+W[0][1].toFixed(1);
+for(let i=1;i<Q.length-2;i++){const p0=Q[i-1],p1=Q[i],p2=Q[i+1],p3=Q[i+2];for(let k=1;k<=24;k++){const t=k/24,t2=t*t,t3=t2*t;
 const f=dd=>0.5*(2*p1[dd]+(-p0[dd]+p2[dd])*t+(2*p0[dd]-5*p1[dd]+4*p2[dd]-p3[dd])*t2+(-p0[dd]+3*p1[dd]-3*p2[dd]+p3[dd])*t3);d+=' L'+f(0).toFixed(1)+' '+f(1).toFixed(1);}}
-document.getElementById('flow').setAttribute('d',d);})();
+document.getElementById('flow2').setAttribute('d',d);})();
 let AUTO=null;
 function stopAuto(){if(AUTO){clearInterval(AUTO);AUTO=null;}}
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const seq=[1,0,1,2];let si=0,visible=false;
