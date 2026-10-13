@@ -9,9 +9,14 @@ An interactive map of 75 AI use cases across the design process, from research t
 | File | What it is |
 |---|---|
 | `index.html` | The interactive map |
-| `data/ai-in-design-process-use-cases-2026-oct.xlsx` | Full dataset: use cases, resources, changelog and method notes |
-| `data/use-cases-2026-oct.csv` | Use cases as CSV |
-| `data/resources-2026-oct.csv` | The 125 sources as CSV |
+| `data/versions.json` | Every published release, newest first. The map shows the newest one. |
+| `data/releases/2026-oct/` | The 2026 Oct release: the full spreadsheet (`.xlsx`), use cases and resources as CSV, and `use-cases.json`, which the map reads |
+| `data/tool-categories.json` | How tools are grouped in the Tool filter |
+| `scripts/build_release.py` | Turns the project spreadsheet into a release |
+
+## How updates work
+
+The data is edited in a private Google Sheet. When a new version is ready, it is reviewed, saved as a release in `data/releases/`, and added to `data/versions.json`. Earlier releases stay in the repository unchanged, so every version of the map can be traced.
 
 ## How the map works
 
@@ -20,7 +25,7 @@ An interactive map of 75 AI use cases across the design process, from research t
 - **Popularity:** how widely practitioners use it. Thresholds follow Rogers' Diffusion of Innovations: over 50% of surveyed practitioners is high, 16 to 50% is medium. Without survey data, the level depends on how many mainstream tools offer the feature and how many independent practitioner reports exist.
 - **Sources:** gathered with Claude Research from published papers, expert reports, practitioner writing and tool documentation.
 
-See the Notes tab in the spreadsheet for the full method.
+See the Notes tab in the spreadsheet (`data/releases/2026-oct/`) for the full method.
 
 ## Status
 

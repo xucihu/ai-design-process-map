@@ -1,0 +1,9 @@
+[
+ {
+  "version": "2026 Oct",
+  "released": "2026-10-13",
+  "useCases": 75,
+  "file": "data/releases/2026-oct/use-cases.json",
+  "notes": "First release. 75 use cases mapped to 20 steps; popularity scored with the Rogers-based rubric (Runs 1–2, 2026-10-05) and 28 entries re-checked (Run 3, 2026-10-13)."
+ }
+]
