@@ -1,0 +1,86 @@
+{
+ "General AI assistants": [
+  "ChatGPT",
+  "Claude",
+  "Copilot",
+  "Gemini",
+  "NotebookLM",
+  "Perplexity",
+  "ScholarAI"
+ ],
+ "Research platforms": [
+  "Condens",
+  "Dovetail",
+  "dscout",
+  "Glaut",
+  "Indeemo",
+  "Listen Labs",
+  "Looppanel",
+  "Lyssna",
+  "Marvin",
+  "MAXQDA",
+  "Maze",
+  "Outset",
+  "Seer",
+  "Synthetic Users",
+  "Usercall",
+  "UserFlix",
+  "UserTesting",
+  "Vistaly"
+ ],
+ "Design and whiteboard tools": [
+  "Adobe Stock",
+  "Autoname",
+  "Feedback Wizard AI",
+  "FigJam",
+  "Figma",
+  "Framer",
+  "Miro",
+  "Mural",
+  "Review Raven",
+  "Stark"
+ ],
+ "Prototyping and coding tools": [
+  "Anima",
+  "Bolt",
+  "Builder.io",
+  "Claude Code",
+  "Claude Design",
+  "Cursor",
+  "Figma Make",
+  "Google Stitch",
+  "Locofy",
+  "Lovable",
+  "Magic Patterns",
+  "OpenAI Codex",
+  "Replit",
+  "Uizard",
+  "v0"
+ ],
+ "Image generation": [
+  "Adobe Firefly",
+  "ChatGPT Images",
+  "Figma Weave",
+  "Flora AI",
+  "Midjourney",
+  "Stable Diffusion"
+ ],
+ "Analytics and feedback tools": [
+  "Amplitude",
+  "Attention Insight",
+  "Brainsight",
+  "Contentsquare",
+  "EyeQuant",
+  "Mixpanel",
+  "VisualEyes"
+ ],
+ "Meeting and transcription tools": [
+  "Grain",
+  "Otter.ai",
+  "Zoom AI Companion"
+ ],
+ "Other": [
+  "Patchwork",
+  "Research prototype"
+ ]
+}
