@@ -2,7 +2,7 @@
 
 An interactive map of 75 AI use cases across the design process, from research to prototyping, built by Xuci Hu.
 
-**View the map:** `index.html` (published with GitHub Pages)
+**View the map:** https://xucihu.github.io/ai-design-process-map/
 
 ## What's here
 
