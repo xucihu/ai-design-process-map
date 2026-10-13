@@ -228,7 +228,7 @@ button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 <div class="lg"><div class="pill" id="szpill" role="group" aria-label="Circle size shows"><span class="thumb" aria-hidden="true"></span><div class="opt on"><button type="button" class="optb sg" data-size="pop" aria-pressed="true">Popularity</button><span id="leg-pop"></span></div><div class="opt"><button type="button" class="optb sg" data-size="count" aria-pressed="false">Number of use cases</button><span id="leg-cnt"></span></div></div>
 <div class="lg-row"><div class="ramp"><span class="ramp-t" id="ramp-cap"></span><svg id="ramp" height="50" aria-hidden="true"></svg></div></div></div>
 </div>
-<p class="note">Data version 2026 Oct. Popularity follows the rubric in the method notes; entries marked "Evidence still being checked" will be re-verified in the next update.</p>
+<p class="note">Data version 2026 Oct. Popularity follows the rubric in the method notes.<br>&copy; 2026 Xuci Hu</p>
 </section>
 <aside class="panel" id="panel" aria-live="polite" hidden></aside>
 </div>
@@ -340,7 +340,7 @@ function mk(t,a){const e=document.createElementNS(ns,t);for(const k in a)e.setAt
 function stepData(short){const list=UC.filter(u=>u.step===short&&pass(u));const sc=list.map(u=>POP[u.pop]).filter(Boolean);
 const avg=sc.length?sc.reduce((a,b)=>a+b,0)/sc.length:null;const cnt={};list.forEach(u=>cnt[u.acc]=(cnt[u.acc]||0)+1);
 let dom=null;ACC.forEach(a=>{if((cnt[a]||0)>(cnt[dom]||0))dom=a;});return{list,avg,dom};}
-const GROUPS=[['Prepare research','Research',['Planning','Materials','Recruiting']],['Gather data','Research',['Desk research','Fieldwork','Evaluation']],['Structure data','Analysis',['Data prep','Coding','Quant']],['Interpret data','Analysis',['Patterns','Modelling','Insights']],['Frame direction','Synthesis',['Frameworks','Principles']],['Generate concepts','Synthesis',['Ideation','Concepts']],['Design','Prototype',['Interface design','Content creation']],['Build and hand off','Prototype',['Functional','Handoff']]];
+const GROUPS=[['Plan research','Research',['Planning','Materials','Recruiting']],['Gather data','Research',['Desk research','Fieldwork','Evaluation']],['Structure data','Analysis',['Data prep','Coding','Quant']],['Interpret data','Analysis',['Patterns','Modelling','Insights']],['Frame direction','Synthesis',['Frameworks','Principles']],['Generate concepts','Synthesis',['Ideation','Concepts']],['Design','Prototype',['Interface design','Content creation']],['Build and hand off','Prototype',['Functional','Handoff']]];
 const PH=['Research','Analysis','Synthesis','Prototype'];const LEVELS=['Phases','Groups','Steps'];let LEVEL=2;const EXP=new Set();
 function angOf(short){return STEPS.find(x=>x[0]===short)[3];}
 const stepNode=x=>({kind:'step',key:x[0],label:x[0],full:x[1],members:[x[0]]});
@@ -359,14 +359,29 @@ const PA={Research:[230,450],Analysis:[230,170],Synthesis:[590,170],Prototype:[5
 const RS=[[40,22,30],[24,16,18],[9,13,9]];
 function phaseOf(members){return STEPS.find(x=>x[0]===members[0])[2];}
 function lblLines(l){if(l.length<=13||l.indexOf(' ')<0)return[l];const w=l.split(' ');let best=1,bd=1e9;for(let k=1;k<w.length;k++){const d=Math.abs(w.slice(0,k).join(' ').length-w.slice(k).join(' ').length);if(d<bd){bd=d;best=k;}}return[w.slice(0,best).join(' '),w.slice(best).join(' ')];}
-const POS={'Planning':[378,362],'Materials':[314,425],'Recruiting':[372,446],'Desk research':[188,440],'Fieldwork':[122,404],'Evaluation':[300,545],'Data prep':[227,259],'Coding':[158,231],'Quant':[232,182],'Patterns':[327,168],'Modelling':[291,96],'Insights':[353,88],'Frameworks':[449,99],'Principles':[557,116],'Ideation':[611,195],'Concepts':[618,259],'Interface design':[582,366],'Content creation':[652,409],'Functional':[549,490],'Handoff':[476,523]};
+const POS={'Planning':[380,370],'Materials':[300,420],'Recruiting':[365,455],'Desk research':[215,440],'Fieldwork':[165,370],'Evaluation':[300,545],'Data prep':[227,259],'Coding':[158,231],'Quant':[232,182],'Patterns':[327,168],'Modelling':[283,126],'Insights':[353,88],'Frameworks':[449,99],'Principles':[557,116],'Ideation':[611,195],'Concepts':[618,259],'Interface design':[582,366],'Content creation':[652,409],'Functional':[549,490],'Handoff':[476,523]};
 const OLDPOS={'Insights':[353,88],'Modelling':[291,108],'Patterns':[291,155],'Quant':[255,220],'Coding':[180,231],'Data prep':[218,293],'Evaluation':[224,350],'Fieldwork':[174,382],'Desk research':[224,404],'Recruiting':[341,469],'Materials':[276,504],'Planning':[356,537],'Frameworks':[463,99],'Principles':[543,134],'Ideation':[611,204],'Concepts':[618,304],'Interface design':[611,366],'Content creation':[623,409],'Functional':[537,490],'Handoff':[488,523]};
+// how an opened group lays out its steps in Groups view: tn = [along the flow, outward], xy = screen offsets
+const EXPL={'Plan research':{tn:{Planning:[-48,0],Materials:[30,34],Recruiting:[30,-34]}},'Gather data':{xy:{'Desk research':[-84,0],Fieldwork:[0,0],Evaluation:[84,0]}}};
+// Steps view: a smooth spiral from the center through the Research steps, then one even loop round the 2x2,
+// ending just before Evaluative research. Drawn from where the circles actually land.
+function flow2(ns){const at=k=>{const n=ns.find(m=>m.key===k);return[n.x,n.y];},mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
+const RM=218,GR=32/274,pol=th=>{const a=th*Math.PI/180,r=RM+GR*(th-200);return[410+r*Math.cos(a),316+r*Math.sin(a)];};
+const W=[[410,316],at('Planning'),mid(at('Materials'),at('Recruiting')),at('Desk research'),at('Fieldwork'),pol(200),pol(214)];
+const Q=[W[0]].concat(W,[pol(228)]);let d='M410 316';
+for(let i=1;i<Q.length-2;i++){const p0=Q[i-1],p1=Q[i],p2=Q[i+1],p3=Q[i+2];for(let k=1;k<=20;k++){const t=k/20,t2=t*t,t3=t2*t;
+const f=j=>0.5*(2*p1[j]+(-p0[j]+p2[j])*t+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*t2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*t3);d+=' L'+f(0).toFixed(1)+' '+f(1).toFixed(1);}}
+for(let th=216;th<=474;th+=2){const p=pol(th);d+=' L'+p[0].toFixed(1)+' '+p[1].toFixed(1);}
+document.getElementById('flow2').setAttribute('d',d);}
 function layout(ns){
 const cen=(src,ms)=>[ms.reduce((a,m)=>a+src[m][0],0)/ms.length,ms.reduce((a,m)=>a+src[m][1],0)/ms.length];
 const onRing=([x,y])=>{const th=Math.atan2(y-310,x-410);return[410+200*Math.cos(th),310+200*Math.sin(th)];};
 ns.forEach(n=>{let ax,ay;
 if(n.kind!=='step')[ax,ay]=onRing(cen(OLDPOS,n.members));
-else if(LEVEL===1){const gm=GROUPS.find(gg=>gg[2].includes(n.key))[2];const G=onRing(cen(OLDPOS,gm)),C=cen(POS,gm);ax=G[0]+(POS[n.key][0]-C[0])*0.8;ay=G[1]+(POS[n.key][1]-C[1])*0.8;}
+else if(LEVEL===1){const gg=GROUPS.find(gg=>gg[2].includes(n.key)),gm=gg[2];const G=onRing(cen(OLDPOS,gm)),C=cen(POS,gm),sp=EXPL[gg[0]];
+if(sp&&sp.tn){const th=Math.atan2(G[1]-310,G[0]-410),[a,b]=sp.tn[n.key];ax=G[0]-Math.sin(th)*a+Math.cos(th)*b;ay=G[1]+Math.cos(th)*a+Math.sin(th)*b;}
+else if(sp&&sp.xy){ax=G[0]+sp.xy[n.key][0];ay=G[1]+sp.xy[n.key][1];}
+else{ax=G[0]+(POS[n.key][0]-C[0])*0.8;ay=G[1]+(POS[n.key][1]-C[1])*0.8;}}
 else[ax,ay]=POS[n.key];
 const gr=GROUPS.find(gg=>gg[2].includes(n.members[0]));n.grp=n.kind==='step'?gr[0]:n.key;
 n.lines=lblLines(LABEL[n.label]||n.label);n.hw=Math.max(n.r,7.2*Math.max(...n.lines.map(x=>x.length))/2);
@@ -408,7 +423,7 @@ function render(){updCount();if(LEVEL===1){EXP.clear();if(SEL){const gr=GROUPS.f
 document.querySelectorAll('.lv').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.level===LEVEL)));
 const ns=nodes().map(n=>{const lv=n.kind==='step'?2:n.kind==='group'?1:0;n.d=groupData(n.members);const da=allData(n.members);
 n.r=Math.max(radFor(da,lv,'pop'),radFor(da,lv,'count'));n.rd=radFor(n.d,lv,SIZE);return n;});
-layout(ns);
+layout(ns);if(LEVEL===2)flow2(ns);
 const motion=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const old=PREVN,newKeys=new Set(ns.map(n=>n.key)),ghost=document.getElementById('ghost');
 Object.values(old).forEach(o=>{if(newKeys.has(o.key))return;
@@ -444,13 +459,7 @@ PREVN=next;
 if(anim.length){g.getBoundingClientRect();requestAnimationFrame(()=>requestAnimationFrame(()=>{anim.forEach(([el,pc,r,t])=>{el.style.transition='transform .7s '+EASE+', opacity .6s ease';el.style.transform='';el.style.opacity='';pc.setAttribute('r',r);t.style.transition='transform .7s '+EASE;t.style.transform='';});}));}
 panel();}
 (function(){const p=a=>[410+200*Math.cos(a*Math.PI/180),310+200*Math.sin(a*Math.PI/180)];const[a0,b0]=p(93),[a1,b1]=p(78+360);document.getElementById('flow').setAttribute('d','M'+a0+' '+b0+' A200 200 0 1 1 '+a1+' '+b1);
-const order=[['Planning'],['Materials','Recruiting'],['Desk research'],['Fieldwork'],['Data prep','Coding','Quant'],['Patterns','Modelling','Insights'],['Frameworks','Principles'],['Ideation','Concepts'],['Interface design','Content creation'],['Functional','Handoff']];
-const W=[[410,316]].concat(order.map(g=>[g.reduce((a,m)=>a+POS[m][0],0)/g.length,g.reduce((a,m)=>a+POS[m][1],0)/g.length]));
-const ev=POS['Evaluation'],pv=W[W.length-1],dx=ev[0]-pv[0],dy=ev[1]-pv[1],L=Math.hypot(dx,dy)||1;W.push([ev[0]-dx/L*44,ev[1]-dy/L*44]);
-const Q=[W[0]].concat(W,[W[W.length-1]]);let d='M'+W[0][0].toFixed(1)+' '+W[0][1].toFixed(1);
-for(let i=1;i<Q.length-2;i++){const p0=Q[i-1],p1=Q[i],p2=Q[i+1],p3=Q[i+2];for(let k=1;k<=24;k++){const t=k/24,t2=t*t,t3=t2*t;
-const f=dd=>0.5*(2*p1[dd]+(-p0[dd]+p2[dd])*t+(2*p0[dd]-5*p1[dd]+4*p2[dd]-p3[dd])*t2+(-p0[dd]+3*p1[dd]-3*p2[dd]+p3[dd])*t3);d+=' L'+f(0).toFixed(1)+' '+f(1).toFixed(1);}}
-document.getElementById('flow2').setAttribute('d',d);})();
+})();
 let AUTO=null;
 function stopAuto(){if(AUTO){clearInterval(AUTO);AUTO=null;}}
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const seq=[1,0,1,2];let si=0,visible=false;
